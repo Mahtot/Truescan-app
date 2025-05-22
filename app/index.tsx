@@ -1,12 +1,25 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useCameraPermissions } from 'expo-camera';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from "expo-router";
+import { useEffect } from 'react';
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import * as Animatable from 'react-native-animatable';
 
 const { width } = Dimensions.get('window');
 
 export default function Index() {
+  const [permission, requestPermission] = useCameraPermissions()
+  const isPermissionGranted = Boolean(permission?.granted)
+
+
+  useEffect(() => {
+    if (permission && !permission.granted) {
+      requestPermission();
+    }
+  }, [permission]);
+
+
   return (
     <LinearGradient
       colors={['bg-accent', 'bg-accent']}
@@ -33,8 +46,8 @@ export default function Index() {
         className="w-full items-center"
       >
         <Link href="/scan" asChild>
-          <TouchableOpacity className="w-full max-w-xs">
-            <View className="bg-primary px-8 py-4 rounded-full items-center shadow-lg">
+          <TouchableOpacity disabled={!isPermissionGranted} className="w-full max-w-xs">
+            <View className={`${isPermissionGranted ? 'opacity-100' : 'opacity-50'} bg-primary px-8 py-4 rounded-full items-center shadow-lg`}>
               <Text className="text-white text-xl font-bold">Scan Product</Text>
             </View>
           </TouchableOpacity>

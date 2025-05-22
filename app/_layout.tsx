@@ -12,6 +12,7 @@ export default function RootLayout() {
           headerShown: false
         }} />
         <Stack.Screen name="scan" options={{ headerShown: false }} />
+        <Stack.Screen name="result" options={{ headerShown: false }} />
 
       </Stack>
     </>)
